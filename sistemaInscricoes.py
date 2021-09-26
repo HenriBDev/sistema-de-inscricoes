@@ -4,8 +4,8 @@ def inscreverCandidato(list, nome, email):
 	list.append(inscrito)
 
 
-
 def listarUsuarios(list):
+	print("*** List a de Inscritos por Ordem de Inscrição.")
 	for usuario in list:
 		print("Nome: " + usuario["nome"] + "	 " + "Email: " + usuario["email"])
 
@@ -13,6 +13,7 @@ def listarUsuarios(list):
 def classificarEmOrdemAlfabetica(list):
 
 	novaLista = sorted(list, key=lambda k: k["nome"])
+	print("*** Lista de Inscritos em Ordem Alfabetica ***")
 	print(novaLista)	
 
 
