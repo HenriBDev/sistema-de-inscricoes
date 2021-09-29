@@ -149,7 +149,7 @@ def quebrarLinhaPorLimite(linha, larguraLinha):
     totalCaracteres = len(caracteres)
     caracteresPar = verificaSeDivisivelPor2(totalCaracteres)
     if totalCaracteres > larguraLinha:
-        totalDivisoes = totalCaracteres // larguraLinha + (1 if not caracteresPar and linhaPar else 0)
+        totalDivisoes = totalCaracteres // larguraLinha + (1 if totalCaracteres % larguraLinha > 0 else 0)
     else:
         totalDivisoes = 1
     for linhaDividida in range(totalDivisoes):
