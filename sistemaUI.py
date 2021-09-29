@@ -25,7 +25,7 @@ def stringParaList(stringParaConversao):
 def listParaString(listParaConversao):
     return "".join(listParaConversao)
 
-def printFormatado(texto = "", alinhamento = "esquerda", repetir = 1, laterais = "", inverteLateral = True, preenchimento = " "):
+def printFormatado(texto = "", alinhamento = "esquerda", repetir = 1, laterais = "", inverteLateral = True, separaLateral = False, preenchimento = " "):
 
     larguraTerminal = shutil.get_terminal_size()[0]
     larguraTexto = larguraTerminal
@@ -49,7 +49,7 @@ def printFormatado(texto = "", alinhamento = "esquerda", repetir = 1, laterais =
     if existeLaterais:
         caracteresLaterais = stringParaList(laterais)
         qtdCaracteresLaterais = len(caracteresLaterais)
-        larguraTexto -= qtdCaracteresLaterais * 2 + 2 
+        larguraTexto -= qtdCaracteresLaterais * 2 + (2 if separaLateral else 0) 
         if larguraTexto <= 0:
             caracteresAMais = 1
             caracteresLaterais.pop()
@@ -79,8 +79,9 @@ def printFormatado(texto = "", alinhamento = "esquerda", repetir = 1, laterais =
                                                    tipoPreenchimento = alinhamento,
                                                    linha = textoQuebrado[linhaAtual])
         if existeLaterais:
-            textoQuebrado[linhaAtual].insert(0," ")
-            textoQuebrado[linhaAtual].append(" ")
+            if separaLateral:
+                textoQuebrado[linhaAtual].insert(0," ")
+                textoQuebrado[linhaAtual].append(" ")
             espacoLateral = larguraTerminal - larguraTexto - 2
             if inverteLateral:
                 textoQuebrado[linhaAtual] = preencherLinha(qtdEspacosVazios = espacoLateral,
