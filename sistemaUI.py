@@ -25,11 +25,13 @@ def stringParaList(stringParaConversao):
 def listParaString(listParaConversao):
     return "".join(listParaConversao)
 
-def printFormatado(texto = "", alinhamento = "esquerda", repetir = 1, laterais = "", inverteLateral = True, separaLateral = False, preenchimento = " "):
+def printFormatado(tamanhoLinha = shutil.get_terminal_size()[0], texto = "", alinhamento = "esquerda", repetir = 1, laterais = "", inverteLateral = True, separaLateral = False, preenchimento = " "):
 
-    larguraTerminal = shutil.get_terminal_size()[0]
-    larguraTexto = larguraTerminal
-    terminalPar = verificaSeDivisivelPor2(larguraTerminal)
+    tamanhoTerminal = shutil.get_terminal_size()[0]
+    if tamanhoLinha > tamanhoTerminal:
+        tamanhoLinha = tamanhoTerminal
+    tamanhoTexto = tamanhoLinha
+    linhaPar = verificaSeDivisivelPor2(tamanhoLinha)
     existeTexto = bool(texto)
     multiplasLinhas = verificaSeForList(texto)
     existeLaterais = verificaSeContemTexto(laterais)
@@ -49,14 +51,14 @@ def printFormatado(texto = "", alinhamento = "esquerda", repetir = 1, laterais =
     if existeLaterais:
         caracteresLaterais = stringParaList(laterais)
         qtdCaracteresLaterais = len(caracteresLaterais)
-        larguraTexto -= qtdCaracteresLaterais * 2 + (2 if separaLateral else 0) 
-        if larguraTexto <= 0:
+        tamanhoTexto -= qtdCaracteresLaterais * 2 + (2 if separaLateral else 0) 
+        if tamanhoTexto <= 0:
             caracteresAMais = 1
             caracteresLaterais.pop()
-            if larguraTexto < 0:
-                caracteresAMais += (larguraTexto * -1) // 2 + 1
+            if tamanhoTexto < 0:
+                caracteresAMais += (tamanhoTexto * -1) // 2 + 1
                 del caracteresLaterais[qtdCaracteresLaterais - caracteresAMais + 1 : qtdCaracteresLaterais]
-            larguraTexto = 2 if terminalPar else 1
+            tamanhoTexto = 2 if linhaPar else 1
         caracteresLaterais.reverse()
 
     if not multiplasLinhas:
@@ -66,15 +68,15 @@ def printFormatado(texto = "", alinhamento = "esquerda", repetir = 1, laterais =
             textoQuebradoLF.extend(quebrarLinhaPorLF(linha))
         else:
             textoQuebradoLF.append(linha)
-    for linha in (textoQuebradoLF if textoQuebradoLF else texto):
-        textoQuebrado.extend(quebrarLinhaPorLimite(linha, larguraTexto))
+    for linha in textoQuebradoLF:
+        textoQuebrado.extend(quebrarLinhaPorLimite(linha, tamanhoTexto))
 
     qtdLinhas = len(textoQuebrado)
 
     for linhaAtual in range(qtdLinhas):
         textoQuebrado[linhaAtual] = stringParaList(textoQuebrado[linhaAtual])
         qtdCaracteresTexto = len(textoQuebrado[linhaAtual])
-        textoQuebrado[linhaAtual] = preencherLinha(qtdEspacosVazios = larguraTexto - qtdCaracteresTexto,
+        textoQuebrado[linhaAtual] = preencherLinha(qtdEspacosVazios = tamanhoTexto - qtdCaracteresTexto,
                                                    preenchimento = caracteresPreenchimento,
                                                    tipoPreenchimento = alinhamento,
                                                    linha = textoQuebrado[linhaAtual])
@@ -82,7 +84,7 @@ def printFormatado(texto = "", alinhamento = "esquerda", repetir = 1, laterais =
             if separaLateral:
                 textoQuebrado[linhaAtual].insert(0," ")
                 textoQuebrado[linhaAtual].append(" ")
-            espacoLateral = larguraTerminal - larguraTexto - 2
+            espacoLateral = tamanhoLinha - tamanhoTexto - (2 if separaLateral else 0)
             if inverteLateral:
                 textoQuebrado[linhaAtual] = preencherLinha(qtdEspacosVazios = espacoLateral,
                                                            preenchimento = caracteresLaterais,
@@ -94,7 +96,7 @@ def printFormatado(texto = "", alinhamento = "esquerda", repetir = 1, laterais =
                                                            tipoPreenchimento = "direita",
                                                            linha = textoQuebrado[linhaAtual])
                 caracteresLaterais.reverse()
-                textoQuebrado[linhaAtual] = preencherLinha(qtdEspacosVazios = espacoLateral // 2 + (0 if terminalPar else 1),
+                textoQuebrado[linhaAtual] = preencherLinha(qtdEspacosVazios = espacoLateral // 2 + (0 if linhaPar else 1),
                                                            preenchimento = caracteresLaterais,
                                                            tipoPreenchimento = "esquerda",
                                                            linha = textoQuebrado[linhaAtual])
@@ -106,8 +108,8 @@ def printFormatado(texto = "", alinhamento = "esquerda", repetir = 1, laterais =
         
     for linha in textoFormatado:
         linhaEmString = listParaString(linha)
-        print(linhaEmString, end = "")
-
+        print(linhaEmString, end = ("" if tamanhoLinha == tamanhoTerminal else "\n"))
+    
 def preencherLinha(qtdEspacosVazios, preenchimento, tipoPreenchimento = "centralizado", linha = [""]):
     indice = 0
     caracterAtual = 1
@@ -142,19 +144,17 @@ def quebrarLinhaPorLF(linha):
     linhasQuebradas.append(linha)
     return linhasQuebradas
 
-def quebrarLinhaPorLimite(linha, larguraLinha):
+def quebrarLinhaPorLimite(linha, tamanhoLinha):
     linhasQuebradas = []
-    linhaPar = verificaSeDivisivelPor2(larguraLinha)
     caracteres = stringParaList(linha)
     totalCaracteres = len(caracteres)
-    caracteresPar = verificaSeDivisivelPor2(totalCaracteres)
-    if totalCaracteres > larguraLinha:
-        totalDivisoes = totalCaracteres // larguraLinha + (1 if totalCaracteres % larguraLinha > 0 else 0)
+    if totalCaracteres > tamanhoLinha:
+        totalDivisoes = totalCaracteres // tamanhoLinha + (1 if totalCaracteres % tamanhoLinha > 0 else 0)
     else:
         totalDivisoes = 1
     for linhaDividida in range(totalDivisoes):
-        inicioDivisao = linhaDividida * larguraLinha
-        finalDivisao = inicioDivisao + larguraLinha
+        inicioDivisao = linhaDividida * tamanhoLinha
+        finalDivisao = inicioDivisao + tamanhoLinha
         linhaAtual = linha[inicioDivisao : finalDivisao]
         linhasQuebradas.append(linhaAtual)
     return linhasQuebradas
