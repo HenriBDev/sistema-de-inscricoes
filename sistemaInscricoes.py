@@ -1,23 +1,20 @@
-#  H1
+
 def cadastrarUsuario(list: [], nome: str, email: str):
-	inscrito = {"nome": nome, "email": email} # dicionário
+	inscrito = {"nome": nome, "email": email}
 	list.append(inscrito)
 
 
-# H2
 def listarUsuarios(list: []):
 	for usuario in list:
 		print("Nome: " + usuario["nome"] + "	 " + "Email: " + usuario["email"])
 
 
-# H3
-def classificarEmOrdemAlfabetica(list):
+def classificarEmOrdemAlfabetica(list: []):
 	novaLista = sorted(list, key=lambda k: k["nome"])
 	for usuario in novaLista:
 		print("Nome: " + usuario["nome"] + "	 " + "Email: " + usuario["email"])
 
 
-# H4
 def buscaPorNome(list: [], nome: str):
 	for usuario in list:
 		if usuario["nome"] == nome:
@@ -25,7 +22,6 @@ def buscaPorNome(list: [], nome: str):
 	return False
 
 
-# H5
 def deletarUsuario(list: [], email: str):
 	for usuario in list:
 		if usuario["email"] == email:
@@ -34,13 +30,13 @@ def deletarUsuario(list: [], email: str):
 	return False
 
 
-# H6
 def alterarNome(list: [], email: str, novoNome: str):
 	for usuario in list:
 		if usuario["email"] == email:
 			usuario["nome"] = novoNome
 			return True
 	return False
+
 
 def main():
 
