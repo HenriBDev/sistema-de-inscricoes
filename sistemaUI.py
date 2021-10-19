@@ -170,5 +170,3 @@ def quebrarLinhaPorLimite(linha, tamanhoLinha):
         linhaAtual = linha[inicioDivisao : finalDivisao]
         linhasQuebradas.append(linhaAtual)
     return linhasQuebradas
-
-pausarTela()
