@@ -9,6 +9,13 @@ def limparTela():
     elif (sistemaOp == "Linux" or sistemaOp == "Darwin"):
         os.system("clear")
 
+def pausarTela():
+    sistemaOp = platform.system()
+    if (sistemaOp == "Windows"):
+        os.system("pause")
+    elif (sistemaOp == "Linux" or sistemaOp == "Darwin"):
+        os.system('read -n1 -r -p "Pressione qualquer tecla para continuar. . ."')
+
 def verificaSeContemTexto(dado):
     return bool(str(dado).strip())
 
@@ -163,3 +170,5 @@ def quebrarLinhaPorLimite(linha, tamanhoLinha):
         linhaAtual = linha[inicioDivisao : finalDivisao]
         linhasQuebradas.append(linhaAtual)
     return linhasQuebradas
+
+pausarTela()
