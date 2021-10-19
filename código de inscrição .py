@@ -1,107 +1,209 @@
-INDICE_EMAIL = 0
+import os
+
+os.system("CLS")
 
 
-usuarios = {}
+def adicionaNovosUsuarios(list: []):
+    os.system("CLS")
+
+    while True:
+        try:
+            qtdalunos = int(input("Informe quantos alunos deseja adicionar: "))
+            cont = 0
+            while(cont < qtdalunos):
+                umAluno = criaAluno(list)
+                list.append(umAluno)
+                qtdalunos -= 1
+            os.system("CLS")
+            break
+        except:
+            os.system("CLS")
+            print("Favor, digite apenas números!")
 
 
-def exibirUsuario(nome):
-    print(f"Nome: {nome}\tE-mail: {usuarios[nome][INDICE_EMAIL]}")
+def criaAluno(listaAlunos):
+    os.system("CLS")
 
-
-# H1
-def cadastrarUsuario():
-    global usuarios
-    nomeRequisitado = input("Nome do usuário: ")
-    emailRequisitado = input("E-mail do usuário: ")
-    usuarios[nomeRequisitado] = [emailRequisitado]
-    print(f"Usuário {nomeRequisitado} registrado com sucesso.")
-
-
-# H2
-def exibirUsuariosCadastro():
-    global usuarios
-    print()
-    for nome in usuarios.keys():
-        exibirUsuario(nome)
-    print()
-
-    
-# H3
-def exibirUsuariosAlfabetica():
-    global usuarios
-    print()
-    nomesOrdenados = sorted(usuarios.keys())
-    for nome in nomesOrdenados:
-        exibirUsuario(nome)
-    print()
-
-
-# H4
-def verificarPresenca():
-    global usuarios
-    nomeRequisitado = input("Usuário a ser verificado: ")
-    if nomeRequisitado in usuarios:
-        print("Usuário encontrado.")
+    novoAluno = {}
+    novoAluno["nome"] = input("Digite o nome do aluno: ")
+    if len(listaAlunos) > 0:
+        existeEmail = True
     else:
-        print("Usuário não encontrado.")
+        existeEmail = False
+        novoAluno["email"] = input("Digite o email do aluno: ")
+    while existeEmail:
+        novoAluno["email"] = input("Digite o email do aluno: ")
+
+        for usuario in listaAlunos:
+            if usuario["email"] == novoAluno["email"]:
+                existeEmail = True
+                break
+        else:
+            existeEmail = False
+        if existeEmail:
+            os.system("CLS")
+            print(
+                f"Email {usuario['email']} já existente, digite outro por favor.")
+    return novoAluno
 
 
-# H5
-def removerUsuario():
-    global usuarios
-    emailRequisitado = input("E-mail do usuário a ser removido: ")
-    for nome in usuarios.keys():
-        if usuarios[nome][INDICE_EMAIL] == emailRequisitado:
-            del usuarios[nome]
-            print("Usuário removido.")
+def exibeCadastros(list: []):
+    os.system("CLS")
 
-    print("Usuário não encontrado.")
-
-# H6
-def alterarNome():
-    global usuarios
-    emailRequisitado = input("E-mail do usuário: ")
-    for nome in usuarios.keys():
-        if usuarios[nome][INDICE_EMAIL] == emailRequisitado:
-            del usuarios[nome]
-            novoNome = input("Novo nome do usuário: ")
-            usuarios[novoNome] = [emailRequisitado]
-            print("Nome alterado.")
-            return
-
-    print("Usuário não encontrado.")
-
-
-def escolherAcao():
-    print("O que deseja fazer?")
-    print("1 - Cadastrar novo usuário")
-    print("2 - Exibir usuários (ordem de cadastro)")
-    print("3 - Exibir usuários (ordem alfabética)")
-    print("4 - Buscar usuário")
-    print("5 - Remover usuário")
-    print("6 - Atualizar nome de usuário")
-    escolha = int(input("> "))
-    
-    if escolha == 1:
-        cadastrarUsuario()
-    elif escolha == 2:
-        exibirUsuariosCadastro()
-    elif escolha == 3:
-        exibirUsuariosAlfabetica()
-    elif escolha == 4:
-        verificarPresenca()
-    elif escolha == 5:
-        removerUsuario()
-    elif escolha == 6:
-        alterarNome()
+    if len(list) > 0:
+        print("\n*** Lista de Inscritos por Ordem de Inscrição.\n")
+        for usuario in list:
+            print("Nome: " + usuario["nome"] +
+                  "  ===  " + "Email: " + usuario["email"])
     else:
-        print("Escolha indisponível.")
+        print("Não há usuários cadastrados!\n")
 
-    
+    os.system('pause')
+    os.system("CLS")
+
+
+def exibeCadastrosAlfabetico(list: []):
+    os.system("CLS")
+    if len(list) > 0:
+        novaLista = sorted(list, key=lambda k: k["nome"])
+        for usuario in novaLista:
+            print("Nome: " + usuario["nome"] +
+                  "	 " + "Email: " + usuario["email"])
+    else:
+        print("Não há usuários cadastrados!\n")
+
+    os.system('pause')
+    os.system("CLS")
+
+
+def buscaPorNome(list: []):
+    os.system("CLS")
+
+    try:
+        nome = input("Digite o nome para a consulta: ")
+        for usuario in list:
+            if usuario['nome'] == nome:
+                cond = f"O usuário Nome: {nome} Email: {usuario['email']} está cadastrado"
+                break
+            else:
+                cond = "Usuário não encontrado!"
+        print(cond)
+    except:
+        print("Ainda não há uma lista. Favor insira ao menos um usuário")
+
+    os.system("pause")
+    os.system("CLS")
+
+
+def excluiAlunoPorEmail(list: []):
+    os.system("CLS")
+
+    email = input("DIgite o email para a exclusão do usuário: ")
+
+    usuarioNaoEncontrado = True
+    for usuario in list:
+        if usuario['email'] == email:
+            usuarioNaoEncontrado = False
+            while True:
+                verificacao = input(
+                    f"Gostaria de excluir o usuário Nome: {usuario['nome']} Email: {usuario['email']}? S - Confirma, N - Abnega: ").upper()[0]
+                if (verificacao == "S"):
+                    list.pop(list.index(usuario))
+                    print("Usuário deletado com sucesso!")
+                    break
+                elif (verificacao == "N"):
+                    break
+                else:
+                    print("Digite apenas S ou N!")
+
+    if usuarioNaoEncontrado:
+        print("usuario Nao Encontrado")
+
+    os.system("pause")
+    os.system("CLS")
+
+
+def alterarNome(list: []):
+    email = input("Digite o email do usuário para alterar o nome: ")
+    usuarioNaoEncontrado = True
+    for usuario in list:
+        if usuario["email"] == email:
+            usuarioNaoEncontrado = False
+            while True:
+                verificacao = input(
+                    f"Gostaria de alterar o nome do usuário Nome: {usuario['nome']} Email: {usuario['email']}? S - Confirma, N - Abnega: ").upper()[0]
+
+                if (verificacao == "S"):
+                    novoNome = input("Digite o novo nome: ")
+                    usuario["nome"] = novoNome
+                    print("Nome alterado!")
+                    return True
+                elif (verificacao == "N"):
+                    return True
+                else:
+                    print("Digite apenas S ou N!")
+    if usuarioNaoEncontrado:
+        print("usuario Nao Encontrado")
+
+    os.system("pause")
+    os.system("CLS")
+
+
+def menu():
+    listaAlunos = []
+
+    while True:
+        menuLayout()
+
+        try:
+            op = int(input("\nEscolha uma opção de (1 a 7): "))
+
+            if(op == 1):
+                adicionaNovosUsuarios(listaAlunos)
+            elif(op == 2):
+                exibeCadastros(listaAlunos)
+            elif(op == 3):
+                exibeCadastrosAlfabetico(listaAlunos)
+            elif(op == 4):
+                buscaPorNome(listaAlunos)
+            elif(op == 5):
+                excluiAlunoPorEmail(listaAlunos)
+            elif(op == 6):
+                alterarNome(listaAlunos)
+            elif(op == 7):
+                os.system("CLS")
+                print("Encerrando o programa!")
+                os.system("pause")
+                break
+            else:
+                os.system("CLS")
+                print("Opção inválida!")
+                os.system("pause")
+                os.system("CLS")
+        except:
+            os.system("CLS")
+            print("Favor, digite apenas números!")
+
+
+def menuLayout():
+    print("\nO que deseja fazer??\n")
+    print("1 - Cadastrar novos usuários!")
+    print("2 - Exibir todos os usuários cadastrados!")
+    print("3 - Exibir todos os usuários cadastros em ordem alfabetica!")
+    print("4 - Verificar se um usuário faz parte da lista de participantes!")
+    print("5 - Remover um usuário cadastrado pelo seu email!")
+    print("6 - Alterar o nome de um usuário cadastrado!")
+    print("7 - Finaliza a operação!")
+
+
+def mensagemEntrada():
+    print("Olá. Seja Bem vindo ao app de gestão de inscritos!")
+
+
 def main():
-  while (True):
-    escolherAcao()
+    mensagemEntrada()
+    menu()
 
 
 if __name__ == "__main__":
-  main()
+    main()
