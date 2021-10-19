@@ -47,7 +47,7 @@ def criaAluno(listaAlunos):
     return novoAluno
 
 
-def exibeCadastros(list: []):
+def listarUsuarios(list: []):
     os.system("CLS")
 
     if len(list) > 0:
@@ -62,19 +62,18 @@ def exibeCadastros(list: []):
     os.system("CLS")
 
 
-def exibeCadastrosAlfabetico(list: []):
+def exibirUsuariosAlfabetica(list: []):
     os.system("CLS")
+
     if len(list) > 0:
-        novaLista = sorted(list, key=lambda k: k["nome"])
-        for usuario in novaLista:
-            print("Nome: " + usuario["nome"] +
-                  "	 " + "Email: " + usuario["email"])
+        nomesOrdenados = sorted(list, key=lambda k: k["nome"])
+        for nome in nomesOrdenados:
+            print(f'Nome: {nome["nome"]} \tE-mail: {nome["email"]}')
     else:
         print("Não há usuários cadastrados!\n")
 
     os.system('pause')
     os.system("CLS")
-
 
 def buscaPorNome(list: []):
     os.system("CLS")
@@ -161,9 +160,9 @@ def menu():
             if(op == 1):
                 adicionaNovosUsuarios(listaAlunos)
             elif(op == 2):
-                exibeCadastros(listaAlunos)
+                listarUsuarios(listaAlunos)
             elif(op == 3):
-                exibeCadastrosAlfabetico(listaAlunos)
+                exibirUsuariosAlfabetica(listaAlunos)
             elif(op == 4):
                 buscaPorNome(listaAlunos)
             elif(op == 5):
