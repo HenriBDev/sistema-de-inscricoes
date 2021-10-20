@@ -10,11 +10,7 @@ def limparTela():
         os.system("clear")
 
 def pausarTela():
-    sistemaOp = platform.system()
-    if (sistemaOp == "Windows"):
-        os.system("pause")
-    elif (sistemaOp == "Linux" or sistemaOp == "Darwin"):
-        os.system('read -n1 -r -p "Pressione qualquer tecla para continuar. . ."')
+    input("\nPressione Enter para continuar. . .")
 
 def verificaSeContemTexto(dado):
     return bool(str(dado).strip())
