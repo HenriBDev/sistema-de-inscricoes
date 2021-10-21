@@ -1,5 +1,6 @@
 import sistemaUI as UI
 
+
 def adicionaNovosUsuarios(list: []):
     menuAtual = "CADASTRAR USUÁRIOS"
     erro = None
@@ -29,6 +30,7 @@ def adicionaNovosUsuarios(list: []):
                 erro = "Digite um valor válido!"
         except:
             erro = "Favor, digite apenas números inteiros!"
+
 
 def criaAluno(listaAlunos, listaParaCadastrar):
 
@@ -68,6 +70,7 @@ def criaAluno(listaAlunos, listaParaCadastrar):
     desenhaMenu(menuAtual, etapa = 3, dadosParaExibir = "\nCadastro cancelado.\n")
     return False
 
+
 def listarUsuarios(list: []):
     if len(list) > 0:
         mensagemPrincipal = "\nLista de Inscritos por Ordem de Inscrição.\n"
@@ -77,6 +80,7 @@ def listarUsuarios(list: []):
     else:
         mensagemPrincipal = "\nNão há usuários cadastrados!\n"
     return mensagemPrincipal
+
 
 def exibirUsuariosAlfabetica(list: []):
     if len(list) > 0:
@@ -88,6 +92,7 @@ def exibirUsuariosAlfabetica(list: []):
     else:
         mensagemPrincipal = "\nNão há usuários cadastrados!\n"
     return mensagemPrincipal
+
 
 def buscaPorNome(list: []):
     menuAtual = "BUSCAR USUÁRIO"
@@ -104,6 +109,7 @@ def buscaPorNome(list: []):
     except:
         erro = "Ainda não há uma lista. Favor insira ao menos um usuário\n"
         desenhaMenu(menuAtual, erro, 2)
+
 
 def excluiAlunoPorEmail(list: []):
     menuAtual = "DELETAR USUÁRIO"
@@ -134,6 +140,7 @@ def excluiAlunoPorEmail(list: []):
     if usuarioNaoEncontrado:
         desenhaMenu(menuAtual, etapa = 3, dadosParaExibir = "\nUsuário não encontrado!\n")
 
+
 def alterarNome(list: []):
     menuAtual = "ALTERAR USUÁRIO"
     desenhaMenu(menuAtual)
@@ -162,6 +169,7 @@ def alterarNome(list: []):
                     erro = "Digite apenas S ou N!"
     if usuarioNaoEncontrado:
         desenhaMenu(menuAtual, etapa = 4, dadosParaExibir = "\nUsuário não encontrado!\n")
+
 
 def menu():
     listaAlunos = []
@@ -295,6 +303,7 @@ def desenhaMenu(menuAtual, erro = None, etapa = 1, dadosParaExibir = []):
        (menuAtual == "DELETAR USUÁRIO" and etapa == 3) or
        (menuAtual == "ALTERAR USUÁRIO" and etapa == 4)):
         UI.pausarTela()
+
 
 def main():
     print("\nAntes de usar o programa, experimente aumentar o tamanho do terminal para melhor visualizar a interface")
